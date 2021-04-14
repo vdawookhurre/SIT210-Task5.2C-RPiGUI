@@ -1,0 +1,56 @@
+from tkinter import *
+import RPi.GPIO as GPIO
+
+# Setup ##
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(7, GPIO.OUT)
+GPIO.setup(11, GPIO.OUT)
+GPIO.setup(13, GPIO.OUT)
+
+GPIO.output(7, GPIO.LOW)
+GPIO.output(11, GPIO.LOW)
+GPIO.output(13, GPIO.LOW)
+
+
+## GUI Definitions ##
+win = Tk()
+win.title("Red Yellow Green")
+
+
+## Event Functions ##
+def redOn():
+    GPIO.output(7, GPIO.LOW)
+    GPIO.output(11, GPIO.LOW)
+    GPIO.output(13, GPIO.HIGH)
+    
+def yellowOn():
+    GPIO.output(7, GPIO.LOW)
+    GPIO.output(11, GPIO.HIGH)
+    GPIO.output(13, GPIO.LOW)
+    
+def greenOn():
+    GPIO.output(7, GPIO.HIGH)
+    GPIO.output(11, GPIO.LOW)
+    GPIO.output(13, GPIO.LOW)
+    
+def close():
+    GPIO.cleanup()
+    win.destroy()
+
+
+## Widgets ##
+var = IntVar()
+
+radioRed =Radiobutton(win, text = "Red Led", variable = var, value = 1, command = redOn)
+radioRed.pack()
+
+radioYellow =Radiobutton(win, text = "Yellow Led", variable = var, value = 1, command = yellowOn)
+radioYellow.pack()
+
+radioGreen =Radiobutton(win, text = "Green Led", variable = var, value = 1, command = greenOn)
+radioGreen.pack()
+
+
+win.protocol("WM_DELETE_WINDOW", close) #exit cleanly
+
+win.mainloop() #Loop forever//keep the GUI running
